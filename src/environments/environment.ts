@@ -8,4 +8,7 @@ export const environment = {
     authDomain: 'waikani-cafc4.firebaseapp.com',
     messagingSenderId: '424889849544',
   },
+  pathCategoria: 'Categoria',
+  pathMotivo: 'Motivo',
+  pathProducto: 'Producto'
 };
