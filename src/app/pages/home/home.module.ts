@@ -20,6 +20,8 @@ import { MessagesModule } from 'primeng/messages';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DropdownModule } from 'primeng/dropdown';
+import { SublevelMenuComponent } from 'src/app/shared/sidenav/sublevel-menu.component';
+
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { DropdownModule } from 'primeng/dropdown';
     MotivosComponent,
     UsuarioComponent,
     InventarioComponent,
-    HistoricoComponent
+    HistoricoComponent,
+    SublevelMenuComponent
   ],
   imports: [
     CommonModule,
@@ -45,6 +48,7 @@ import { DropdownModule } from 'primeng/dropdown';
     ConfirmDialogModule,
     ProgressSpinnerModule,
     DropdownModule
+    
   ]
 })
 export class HomeModule { }

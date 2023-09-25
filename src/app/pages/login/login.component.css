@@ -1,5 +1,5 @@
 .wrapper{
-  background: #2CC7A3;
+  background: #52AAAC;
   padding: 0 20px 0 20px;
 }
 .main{
@@ -10,7 +10,7 @@
 }
 .side-image{
   background-image: url("../../../assets/bg.jpg");
-  background-position: center;
+  background-position: left;
   background-size: cover;
   background-repeat: no-repeat;
   border-radius: 10px 0 0 10px;

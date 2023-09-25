@@ -1,33 +1,49 @@
-export const navbarData = [
+import { INavbarData } from "../models/navItem.interface";
+
+export const navbarData:INavbarData[] = [
     {
         routeLink: 'historial',
-        icon: 'pi pi-book',
+        icon: 'library_books',
         label: 'Historial de Movimientos',
         permisos: ['admin']
     },
     {
         routeLink: 'restaurante',
-        icon: 'pi pi-apple',
+        icon: 'restaurant_menu',
         label: 'Restaurante',
         permisos: ['admin', 'restaurante']
     },
     {
         routeLink: 'bodega',
-        icon: 'pi pi-truck',
+        icon: 'warehouse',
         label: 'Bodega',
         permisos: ['admin', 'bodega']
     },
     {
         routeLink: 'productos',
-        icon: 'pi pi-shopping-bag',
+        icon: 'package_2',
         label: 'Productos',
         permisos: ['admin']
     },
     {
         routeLink: 'configuracion',
-        icon: 'pi pi-cog',
+        icon: 'settings',
         label: 'Configuración',
-        permisos: ['admin']
+        permisos: ['admin'],
+        items:[
+            {
+                routeLink: 'home/categoria',
+                label: 'Categorías'
+            },
+            {
+                routeLink: 'home/motivo',
+                label: 'Motivos'
+            },
+            {
+                routeLink: 'home/usuario',
+                label: 'Usuarios'
+            }
+        ]
     }
 
 ];
