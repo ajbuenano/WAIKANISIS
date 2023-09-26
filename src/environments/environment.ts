@@ -10,5 +10,6 @@ export const environment = {
   },
   pathCategoria: 'Categoria',
   pathMotivo: 'Motivo',
-  pathProducto: 'Producto'
+  pathProducto: 'Producto',
+  pathUser: 'Usuario'
 };

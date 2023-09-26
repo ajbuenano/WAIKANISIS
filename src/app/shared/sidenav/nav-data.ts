@@ -20,27 +20,26 @@ export const navbarData:INavbarData[] = [
         permisos: ['admin', 'bodega']
     },
     {
-        routeLink: 'productos',
+        routeLink: '/home/producto',
         icon: 'package_2',
         label: 'Productos',
         permisos: ['admin']
     },
     {
-        routeLink: 'configuracion',
         icon: 'settings',
         label: 'Configuración',
         permisos: ['admin'],
         items:[
             {
-                routeLink: 'home/categoria',
+                routeLink: '/home/categoria',
                 label: 'Categorías'
             },
             {
-                routeLink: 'home/motivo',
+                routeLink: '/home/motivo',
                 label: 'Motivos'
             },
             {
-                routeLink: 'home/usuario',
+                routeLink: '/home/usuario',
                 label: 'Usuarios'
             }
         ]

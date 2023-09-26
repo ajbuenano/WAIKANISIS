@@ -5,15 +5,17 @@ import { usersGuard } from '../../guard/users.guard';
 import { ProductoComponent } from './producto/producto.component';
 import { CategoriaComponent } from './categoria/categoria.component';
 import { MotivosComponent } from './motivos/motivos.component';
+import { UsuarioComponent } from './usuario/usuario.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [usersGuard],
   children:[
-    { path: 'home/producto', component: ProductoComponent, canActivate: [usersGuard], data: { roles: ['admin'] }},
-    { path: 'home/categoria', component: CategoriaComponent, canActivate: [usersGuard], data: { roles: ['admin'] }},
-    { path: 'home/motivo', component: MotivosComponent, canActivate: [usersGuard], data: { roles: ['admin'] }},
+    { path: 'producto', component: ProductoComponent, canActivate: [usersGuard], data: { roles: ['admin'] }},
+    { path: 'categoria', component: CategoriaComponent, canActivate: [usersGuard], data: { roles: ['admin'] }},
+    { path: 'motivo', component: MotivosComponent, canActivate: [usersGuard], data: { roles: ['admin'] }},
+    { path: 'usuario', component: UsuarioComponent, canActivate: [usersGuard], data: { roles: ['admin'] }},
   ]},
-  { path: '**', redirectTo: 'home', pathMatch: 'full'}
+  { path: '**', redirectTo: '', pathMatch: 'full', canActivate: [usersGuard]}
 ];
 
 @NgModule({
