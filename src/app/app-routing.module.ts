@@ -4,9 +4,9 @@ import { usersGuard } from './guard/users.guard';
 import { HomeComponent } from './pages/home/home.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [usersGuard]},
+  { path: '', component: HomeComponent, canActivate: [usersGuard], data: { roles: ['admin', 'bodega', 'restaurante'] }},
   { path: 'login', loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule) },
-  { path: 'home', loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule), canActivate: [usersGuard]},
+  { path: 'home', loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule), canActivate: [usersGuard], data: { roles: ['admin', 'bodega', 'restaurante'] }},
   { path: '**', redirectTo: 'home', pathMatch: 'full'},
 ]
 

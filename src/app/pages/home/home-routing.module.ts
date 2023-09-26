@@ -9,10 +9,11 @@ import { MotivosComponent } from './motivos/motivos.component';
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [usersGuard],
   children:[
-    { path: 'home/producto', component: ProductoComponent},
-    { path: 'home/categoria', component: CategoriaComponent},
-    { path: 'home/motivo', component: MotivosComponent},
-  ]},  
+    { path: 'home/producto', component: ProductoComponent, canActivate: [usersGuard], data: { roles: ['admin'] }},
+    { path: 'home/categoria', component: CategoriaComponent, canActivate: [usersGuard], data: { roles: ['admin'] }},
+    { path: 'home/motivo', component: MotivosComponent, canActivate: [usersGuard], data: { roles: ['admin'] }},
+  ]},
+  { path: '**', redirectTo: 'home', pathMatch: 'full'}
 ];
 
 @NgModule({
