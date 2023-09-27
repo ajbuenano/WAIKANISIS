@@ -11,7 +11,7 @@ export class UsersService {
   constructor(private db:AngularFirestore){}
 
   addUser(user:User){
-    user.id = this.db.createId();
+    user.uid = this.db.createId();
     return this.db.collection('/Usuario').add(user);
   }
 

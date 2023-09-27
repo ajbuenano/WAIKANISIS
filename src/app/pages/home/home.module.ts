@@ -21,6 +21,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DropdownModule } from 'primeng/dropdown';
 import { SublevelMenuComponent } from 'src/app/shared/sidenav/sublevel-menu.component';
+import { CheckboxModule } from 'primeng/checkbox';
 
 
 @NgModule({
@@ -47,8 +48,8 @@ import { SublevelMenuComponent } from 'src/app/shared/sidenav/sublevel-menu.comp
     MessagesModule,
     ConfirmDialogModule,
     ProgressSpinnerModule,
-    DropdownModule
-    
+    DropdownModule,
+    CheckboxModule
   ]
 })
 export class HomeModule { }

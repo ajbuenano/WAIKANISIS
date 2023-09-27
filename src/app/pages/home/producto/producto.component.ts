@@ -53,6 +53,7 @@ export class ProductoComponent {
 
   openNew() {
     this.item = {} as Producto;
+    this.item.verEnRestaurante = false;
     this.submitted = false;
     this.dialog = true;  
   }
@@ -66,8 +67,8 @@ export class ProductoComponent {
     this.submitted = true;
     this.loading = true;
     let itemAux = {} as ProductoDTO;
-    console.log("item",this.item);
     itemAux.nombre = this.item.nombre;
+    itemAux.verEnRestaurante = this.item.verEnRestaurante;
     itemAux.categoria = await this.FirestoreService.getRef(environment.pathCategoria, this.item.categoria.uid);
     if (this.item.uid){
       itemAux.uid = this.item.uid;

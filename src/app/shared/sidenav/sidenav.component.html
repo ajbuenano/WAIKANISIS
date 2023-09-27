@@ -11,7 +11,6 @@
         <li class="sidenav-nav-item" *ngFor="let data of filteredNavbarData">
             <a class="sidenav-nav-link" (click)="handleClick(data)"
                 *ngIf="data.items && data.items.length > 0"
-                [routerLink]="[data.routeLink]"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{exact:true}"
             >
