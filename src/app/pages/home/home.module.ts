@@ -20,6 +20,10 @@ import { MessagesModule } from 'primeng/messages';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DropdownModule } from 'primeng/dropdown';
+import { BodegaComponent } from './bodega/bodega.component';
+import { PickListModule } from 'primeng/picklist';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { RestauranteComponent } from './restaurante/restaurante.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +35,9 @@ import { DropdownModule } from 'primeng/dropdown';
     MotivosComponent,
     UsuarioComponent,
     InventarioComponent,
-    HistoricoComponent
+    HistoricoComponent,
+    BodegaComponent,
+    RestauranteComponent
   ],
   imports: [
     CommonModule,
@@ -44,7 +50,9 @@ import { DropdownModule } from 'primeng/dropdown';
     MessagesModule,
     ConfirmDialogModule,
     ProgressSpinnerModule,
-    DropdownModule
+    DropdownModule,
+    PickListModule,
+    SelectButtonModule
   ]
 })
 export class HomeModule { }

@@ -1,0 +1,91 @@
+<p-messages></p-messages>
+<div class="card">
+    <p-table #dt1 [tableStyle]="{'min-width': '25rem'}"
+    [globalFilterFields]="['nombre','categoria.nombre']">
+        <ng-template pTemplate="caption">
+            <div class="flex">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" placeholder="Buscar" />
+                </span>
+                <button pButton label="Entrada/Salida" class="p-button-outlined ml-auto" icon="pi pi-plus" (click)="openNew()"></button>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="id" style="width:10%">N° <p-sortIcon field="id"></p-sortIcon></th>
+                <th pSortableColumn="nombre" style="width:20%">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+                <th pSortableColumn="categoria" style="width:20%">Categoría <p-sortIcon field="categoria"></p-sortIcon></th>
+                <th pSortableColumn="cantidad" style="width:10%">Cantidad <p-sortIcon field="cantidad"></p-sortIcon></th>
+                <th pSortableColumn="stockmin" style="width:10%">Stock min <p-sortIcon field="stockmin"></p-sortIcon></th>
+                <th pSortableColumn="restaurante" style="width:15%">Restaurante
+                    <tr>
+                        <th pSortableColumn="stockminRestaurante" style="width:15%">Stock min </th>
+                        <th pSortableColumn="cantidadRestaurante" style="width:15%">Cantidad </th>
+                    </tr>
+                </th>
+                <th style="width:20%">Acciones</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+            <tr>
+                <td>{{item.id}}</td>
+                <td>{{item.nombre}}</td>
+                <td>{{item.categoria.nombre}}</td>
+                <td>{{item.inventariobodega.cantidad}}</td>
+                <td>{{item.inventariobodega.stockmin}}</td>
+                <td>
+                    <tr>
+                        <td>{{item.inventariorestaurante.stockmin}}</td>
+                        <td>{{item.inventariorestaurante.cantidad}}</td>
+                    </tr>
+                </td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="edit()"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="delete()"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7">No hay coincidencias en producto.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="dialog" [style]="{ width: '1000px' }" header="Entradas/Salidas" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <p-pickList sourceHeader="Productos" targetHeader="Entrada/Salida" [dragdrop]="true" [responsive]="true" [sourceStyle]="{ height: '0rem' }"
+        [targetStyle]="{ height: '10rem' }" filterBy="name" sourceFilterPlaceholder="Buscar por nombre" targetFilterPlaceholder="Buscar por nombre" breakpoint="1400px">
+            <ng-template let-product pTemplate="item">
+                <div class="flex flex-wrap p-2 align-items-center gap-3">
+                    <img class="w-4rem shadow-2 flex-shrink-0 border-round" src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}" alt="{item.name}" />
+                    <div class="flex-1 flex flex-column gap-2">
+                        <span class="font-bold">{{ product.name }}</span>
+                        <div class="flex align-products-center gap-2">
+                            <i class="pi pi-tag text-sm"></i>
+                            <span>{{ product.category }}</span>
+                        </div>
+                    </div>
+                    <span class="font-bold text-900" contenteditable="true">{{ '$' + product.price }}</span>
+                </div>
+            </ng-template>
+        </p-pickList>
+        <div class="flex justify-content-end flex-wrap mt-3 ">
+            <div class="flex align-items-center justify-content-center m-2">
+                <p-dropdown placeholder="Motivos" optionLabel="name"></p-dropdown>
+            </div>
+            <div class="flex align-items-center justify-content-center m-2">
+                <div class="card flex justify-content-center">
+                    <p-selectButton [options]="stateOptions" [(ngModel)]="value" optionLabel="label" optionValue="value"></p-selectButton>
+                </div>    
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <!--<p-progressSpinner *ngIf="loading" styleClass="w-3rem h-3rem" strokeWidth="6" fill="var(--surface-ground)"></p-progressSpinner> -->
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="save()"></button>
+    </ng-template>
+</p-dialog>
