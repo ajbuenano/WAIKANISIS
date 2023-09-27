@@ -26,6 +26,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { RestauranteComponent } from './restaurante/restaurante.component';
 import { SublevelMenuComponent } from 'src/app/shared/sidenav/sublevel-menu.component';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ToastModule } from 'primeng/toast';
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     DropdownModule,
     CheckboxModule,
     PickListModule,
-    SelectButtonModule
+    SelectButtonModule,
+    ToastModule
   ]
 })
 export class HomeModule { }
