@@ -2,9 +2,9 @@ import { INavbarData } from "../models/navItem.interface";
 
 export const navbarData:INavbarData[] = [
     {
-        routeLink: 'historial',
+        routeLink: 'resumen',
         icon: 'library_books',
-        label: 'Historial de Movimientos',
+        label: 'Resumen',
         permisos: ['admin']
     },
     {

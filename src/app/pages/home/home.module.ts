@@ -17,6 +17,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
 import { MessagesModule } from 'primeng/messages';
+import { TabViewModule } from 'primeng/tabview';
+import { CalendarModule } from 'primeng/calendar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DropdownModule } from 'primeng/dropdown';
@@ -27,6 +29,7 @@ import { RestauranteComponent } from './restaurante/restaurante.component';
 import { SublevelMenuComponent } from 'src/app/shared/sidenav/sublevel-menu.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ToastModule } from 'primeng/toast';
+import { ResumenComponent } from './resumen/resumen.component';
 
 
 @NgModule({
@@ -42,7 +45,8 @@ import { ToastModule } from 'primeng/toast';
     HistoricoComponent,
     SublevelMenuComponent,
     BodegaComponent,
-    RestauranteComponent
+    RestauranteComponent,
+    ResumenComponent
   ],
   imports: [
     CommonModule,
@@ -59,7 +63,10 @@ import { ToastModule } from 'primeng/toast';
     CheckboxModule,
     PickListModule,
     SelectButtonModule,
-    ToastModule
+    ToastModule,
+    TabViewModule,
+    CalendarModule
+
   ]
 })
 export class HomeModule { }
