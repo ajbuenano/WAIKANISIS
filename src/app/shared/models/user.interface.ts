@@ -1,5 +1,6 @@
 export interface User{
-    id:string,
+    id:number,
+    uid:string,
     nombre:string,
     usuario:string,
     correo:string,

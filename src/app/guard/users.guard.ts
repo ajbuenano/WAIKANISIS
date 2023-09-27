@@ -7,14 +7,20 @@ export const usersGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   if(userSvc.isLoggedIn()){
-    return true; 
-    console.log("logeado");
+    let userRole = userSvc.getUserRole(); 
+    const requiredRoles = (route.data as any)['roles'] as string[];
+    const hasRequiredRole = requiredRoles.some(role => role === userRole);
+    if (hasRequiredRole){
+      return true;
+    }
+    else{
+      router.navigate(['/']);
+      return false;
+    }
   }
   else{
     router.navigate(['login']);
-    console.log("deslogeado");
     return false;
-
   }
 
 };

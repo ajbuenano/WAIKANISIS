@@ -1,7 +1,7 @@
 import { Component, HostListener, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { navbarData } from './nav-data';
 import { UsersService } from 'src/app/pages/services/users.service';
-import { NavItem } from '../models/navItem.interface';
+import { INavbarData } from '../models/navItem.interface';
 
 interface SideNavToggle{
   screenWidth:number;
@@ -20,7 +20,8 @@ export class SidenavComponent implements OnInit{
   collapsed = true;
   screenWidth = 0;
   navData = navbarData;
-  filteredNavbarData!: NavItem[];
+  filteredNavbarData!: INavbarData[];
+  multiple: boolean = false;
 
   usersSvc = inject(UsersService);
 
@@ -36,7 +37,7 @@ export class SidenavComponent implements OnInit{
   ngOnInit(): void {
     this.screenWidth = window.innerWidth; 
     let role:string = this.usersSvc.getUserRole()!;
-    this.filteredNavbarData = navbarData.filter(item => item.permisos.includes(role));
+    this.filteredNavbarData = navbarData.filter(item => item.permisos!.includes(role));
   }
 
   toggleCollapse(): void{
@@ -47,5 +48,16 @@ export class SidenavComponent implements OnInit{
   closeSidenav(): void{
     this.collapsed = false;
     this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
+  }
+
+  handleClick(item: INavbarData):void{
+    if (!this.multiple) {
+      for (let modelItem of this.filteredNavbarData) {
+        if (item !== modelItem && modelItem.expanded) {
+          modelItem.expanded = false;
+        }
+      }
+    }
+    item.expanded = !item.expanded;
   }
 }

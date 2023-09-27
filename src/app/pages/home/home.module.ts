@@ -24,6 +24,9 @@ import { BodegaComponent } from './bodega/bodega.component';
 import { PickListModule } from 'primeng/picklist';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { RestauranteComponent } from './restaurante/restaurante.component';
+import { SublevelMenuComponent } from 'src/app/shared/sidenav/sublevel-menu.component';
+import { CheckboxModule } from 'primeng/checkbox';
+
 
 @NgModule({
   declarations: [
@@ -36,6 +39,7 @@ import { RestauranteComponent } from './restaurante/restaurante.component';
     UsuarioComponent,
     InventarioComponent,
     HistoricoComponent,
+    SublevelMenuComponent,
     BodegaComponent,
     RestauranteComponent
   ],
@@ -51,6 +55,7 @@ import { RestauranteComponent } from './restaurante/restaurante.component';
     ConfirmDialogModule,
     ProgressSpinnerModule,
     DropdownModule,
+    CheckboxModule,
     PickListModule,
     SelectButtonModule
   ]

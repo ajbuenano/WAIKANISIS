@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginComponent } from './login.component';
+import { ToastModule } from 'primeng/toast';
 
 
 
@@ -16,7 +17,8 @@ import { LoginComponent } from './login.component';
     CommonModule,
     LoginRoutingModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    ToastModule
   ]
 })
 export class LoginModule { }

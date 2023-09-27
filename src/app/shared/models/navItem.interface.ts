@@ -1,6 +1,8 @@
-export type NavItem = {
-    routeLink:string,
-    icon:string,
+export interface INavbarData {
+    routeLink?:string,
+    icon?:string,
     label:string,
-    permisos: string[]
+    expanded?:boolean,
+    permisos?: string[],
+    items?: INavbarData[]
 }
