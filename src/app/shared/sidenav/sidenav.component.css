@@ -79,7 +79,7 @@
         }
 
         .sidenav-nav-link:hover{
-            background-color: #82FBDF;
+            background-color: #ABD8D2;
             color: #000;
             
             .material-symbols-outlined {
@@ -118,7 +118,7 @@
 
     .sidenav-nav-exit:hover{
         .sidenav-nav-link{
-            background-color: #82FBDF;
+            background-color: #ABD8D2;
             color: #000;
             border: 1px solid #000;
         }
@@ -130,7 +130,7 @@
 }
 
 .active{
-    background-color: #82FBDF;
+    background-color: #ABD8D2;
 
     .material-symbols-outlined,
     .sidenav-link-icon,

@@ -3,11 +3,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsersService } from '../services/users.service';
 import { Router } from '@angular/router';
 import { User } from 'src/app/shared/models/user.interface';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  providers: [MessageService]
 })
 export class LoginComponent implements OnInit {
 
@@ -22,6 +24,7 @@ export class LoginComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly usersSvc =  inject(UsersService);
   private readonly router =  inject(Router);
+  private readonly messageService = inject(MessageService);
 
   ngOnInit(): void {
     this.initForm();
@@ -29,15 +32,6 @@ export class LoginComponent implements OnInit {
 
   onSubmit(){
     const {username, password} = this.form.value;
-
-    /*this.usersSvc.getUsers().subscribe((res) => {
-      this.users = res.map((e:any) => {
-        const data = e.payload.doc.data();
-        data.id = e.payload.doc.id;
-        console.log(data);
-        return data;
-      })
-    });*/
     if(this.form.valid){
       this.usersSvc.getUserByUsername(username).subscribe((res) => {
         if(res.length > 0){
@@ -50,15 +44,16 @@ export class LoginComponent implements OnInit {
           else{
             // Si no se encuentra ningún usuario, puedes manejarlo aquí
             this.user = null;
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Usuario y/o contraseña incorrectos.' });
           } 
         }
         else{
-          alert("usuario y/o contraseña incorrectos");
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Usuario y/o contraseña incorrectos.' });
         }
       });
     }
     else{
-      alert("error en el formulario");
+      this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: 'Los campos son obligatorios.' });
     }
   }
   
