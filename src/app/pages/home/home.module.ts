@@ -30,6 +30,7 @@ import { SublevelMenuComponent } from 'src/app/shared/sidenav/sublevel-menu.comp
 import { CheckboxModule } from 'primeng/checkbox';
 import { ToastModule } from 'primeng/toast';
 import { ResumenComponent } from './resumen/resumen.component';
+import { PasswordModule } from 'primeng/password';
 
 
 @NgModule({
@@ -65,7 +66,8 @@ import { ResumenComponent } from './resumen/resumen.component';
     SelectButtonModule,
     ToastModule,
     TabViewModule,
-    CalendarModule
+    CalendarModule,
+    PasswordModule
 
   ]
 })

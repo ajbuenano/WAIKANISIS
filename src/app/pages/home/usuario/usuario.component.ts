@@ -4,6 +4,10 @@ import { User } from 'src/app/shared/models/user.interface';
 import { FirestoreService } from '../../services/firestore.service';
 import { environment } from 'src/environments/environment';
 
+interface Rol{
+  rol: string;
+}
+
 @Component({
   selector: 'app-usuario',
   templateUrl: './usuario.component.html',
@@ -17,9 +21,20 @@ export class UsuarioComponent {
   submitted: boolean = false;
   item!: User;
 
+  roles!: string [];
+  selectedRol: Rol | undefined;
+
+
   async ngOnInit(): Promise<void> {
     await this.get();
     this.loading = false;
+
+    this.roles = [
+      "-",
+      "admin",
+      "bodega",
+      "restaurante"
+  ];
   }
 
   constructor(private messageService: MessageService, private confirmationService: ConfirmationService,

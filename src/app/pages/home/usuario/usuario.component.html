@@ -13,15 +13,21 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th pSortableColumn="id" style="width:20%">N° <p-sortIcon field="id"></p-sortIcon></th>
-                <th pSortableColumn="nombre" style="width:60%">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
-                <th style="width:20%">Acciones</th>
+                <th pSortableColumn="id" style="width:10%">N° <p-sortIcon field="id"></p-sortIcon></th>
+                <th pSortableColumn="nombre" style="width:20%">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+                <th pSortableColumn="correo" style="width:30%">Correo <p-sortIcon field="correo"></p-sortIcon></th>
+                <th pSortableColumn="usuario" style="width:20%">Usuario <p-sortIcon field="usuario"></p-sortIcon></th>
+                <th pSortableColumn="rol" style="width:10%">Rol <p-sortIcon field="rol"></p-sortIcon></th>
+                <th style="width:10%">Acciones</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item>
             <tr>
                 <td>{{item.id}}</td>
                 <td>{{item.nombre}}</td>
+                <td>{{item.correo}}</td>
+                <td>{{item.usuario}}</td>
+                <td>{{item.rol}}</td>
                 <td>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="edit(item)"></button>
                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="delete(item)"></button>
@@ -42,6 +48,40 @@
             <label for="name">Nombre</label>
             <input type="text" pInputText id="name" [(ngModel)]="item.nombre" required autofocus />
             <small class="p-error" *ngIf="submitted && !item.nombre">El nombre es requerido.</small>
+        </div>
+        <div class="field">
+            <label for="name">Correo</label>
+            <input type="text" pInputText id="name" [(ngModel)]="item.correo" required autofocus />
+            <small class="p-error" *ngIf="submitted && !item.correo">El correo es requerido.</small>
+        </div>
+        <div class="field">
+            <label for="name">Usuario</label>
+            <input type="text" pInputText id="name" [(ngModel)]="item.usuario" required autofocus />
+            <small class="p-error" *ngIf="submitted && !item.usuario">El nombre de usuario es requerido.</small>
+        </div>
+        <div class="field">
+            <label for="name">Contraseña</label>
+            <p-password [(ngModel)]="item.contrasenia" [feedback]="false" [toggleMask]="true"></p-password>
+            <small class="p-error" *ngIf="submitted && !item.contrasenia">La contraseña es requerida.</small>
+        </div>
+        <!--<div class="field">
+            <label for="name">Rol</label>
+            <p-dropdown [options]="roles" [(ngModel)]="selectedRol" optionLabel="name"></p-dropdown>
+        </div>-->
+        <div class="field">
+            <label for="rol">Rol</label>
+            <p-dropdown [(ngModel)]="item.rol" inputId="rol" [options]="roles">
+                <ng-template pTemplate="selectedItem">
+                    <div class="flex align-items-center gap-2" *ngIf="item.rol">
+                        <div>{{ item.rol }}</div>
+                    </div>
+                </ng-template>
+                <ng-template let-rol pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div>{{ rol }}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
         </div>
     </ng-template>
     <ng-template pTemplate="footer">
