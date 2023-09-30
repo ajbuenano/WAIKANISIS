@@ -52,7 +52,13 @@ export class RestauranteComponent {
           itemsAux = this.items;
           for (const itemAux of itemsAux) {
             if(itemAux.cantidadActual !== itemAux.cantidad){
-              itemAux.producto = await this.FirestoreService.getRef(environment.pathProducto, itemAux.producto.uid);
+              let itemActualizar = {
+                uid: itemAux.uid,
+                producto: {},
+                cantidad: itemAux.cantidad,
+                stockmin: itemAux.stockmin
+              };
+              itemActualizar.producto = await this.FirestoreService.getRef(environment.pathProducto, itemAux.producto.uid);
               if (itemAux.uid){
                 if(itemAux.cantidad > itemAux.cantidadActual){
                   let itemMovimiento = {
@@ -61,8 +67,8 @@ export class RestauranteComponent {
                     producto: itemAux.producto,
                     cantidad: itemAux.cantidad - itemAux.cantidadActual
                   };
-                  itemAux.cantidad = +itemAux.cantidadActual;
-                  await this.FirestoreService.updateDoc(itemAux, environment.pathInventarioRestaurante, itemAux.uid).then(() => {
+                  itemActualizar.cantidad = +itemAux.cantidadActual;
+                  await this.FirestoreService.updateDoc(itemActualizar, environment.pathInventarioRestaurante, itemAux.uid).then(() => {
                     this.FirestoreService.createDoc(itemMovimiento, environment.pathMovimientoRestaurante, itemMovimiento.uid)
                     this.messageService.add({ severity: 'success', summary: 'Operación exitosa', detail: 'Información subida' });
                   }).catch(() => {

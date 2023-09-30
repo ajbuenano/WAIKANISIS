@@ -24,7 +24,11 @@
                 <td>{{item.id}}</td>
                 <td>{{item.producto?.categoria?.nombre}}</td>
                 <td>{{item.producto?.nombre}}</td>
-                <td>{{item.cantidad}}</td>
+                <td>
+                    <div [ngClass]="{'lowstock': (item.cantidad <= item.stockmin)}">
+                        {{item.cantidad}}
+                    </div>
+                </td>
                 <td pEditableColumn="true" pEditableColumnField="cantidad">
                     <p-cellEditor>
                         <ng-template pTemplate="input">
