@@ -61,6 +61,17 @@ export class FirestoreService {
     return collection.valueChanges();
   }
 
+  getCollectionByDate<tipo>(path: string, startAt: any, endAt: any) {
+    if (startAt == null) {
+      startAt = new Date();
+    }
+    const collection = this.redodb.collection<tipo>(path, 
+      ref => ref.where('fecha', '>=', startAt).where('fecha', '<=', endAt)
+                .orderBy('fecha', 'desc')
+      );
+    return collection.valueChanges();
+  }
+
   getCollectionPaginada<tipo>(path: string, limit: number, startAt: any) {
     if (startAt == null) {
       startAt = new Date();

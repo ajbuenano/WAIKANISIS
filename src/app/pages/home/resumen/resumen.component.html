@@ -7,9 +7,9 @@
                     <div class="flex justify-content-between flex-wrap">
                         <span class="p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input pInputText type="text" placeholder="Buscar" />
+                            <input pInputText type="text" (input)="dt1.filterGlobal(getValueEvent($event), 'contains')" placeholder="Buscar" />
                         </span>
-                        <p-calendar [(ngModel)]="date" selectionMode="range" [showIcon]="true" [readonlyInput]="true"></p-calendar>
+                        <p-calendar [(ngModel)]="date" dateFormat="dd/mm/yy" selectionMode="range" [showIcon]="true" [readonlyInput]="true"></p-calendar>
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header">
@@ -42,7 +42,46 @@
             </p-table>
         </div>
     </p-tabPanel>
-    <p-tabPanel header="Insumos">
+    <p-tabPanel header="Restaurante">
+        <div class="card">
+            <p-table #dt2 [value]="items" [tableStyle]="{'min-width': '25rem'}"
+            [globalFilterFields]="['producto.nombre','producto.categoria.nombre']" [loading]="loading">
+                <ng-template pTemplate="caption">
+                    <div class="flex justify-content-between flex-wrap">
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt2.filterGlobal(getValueEvent($event), 'contains')" placeholder="Buscar" />
+                        </span>
+                        <p-calendar [(ngModel)]="date" dateFormat="dd/mm/yy" selectionMode="range" [maxDate]="maxDate" [showIcon]="true" [readonlyInput]="true" (onSelect)="getResumenRestaurante()"></p-calendar>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="id" style="width:10%">N° <p-sortIcon field="id"></p-sortIcon></th>
+                        <th pSortableColumn="fecha" style="width:30%">Fecha <p-sortIcon field="fecha"></p-sortIcon></th>
+                        <th pSortableColumn="producto" style="width:20%">Producto <p-sortIcon field="producto"></p-sortIcon></th>
+                        <th pSortableColumn="categoria" style="width:20%">Categoría <p-sortIcon field="categoria"></p-sortIcon></th>
+                        <th pSortableColumn="cantidad" style="width:20%">Cantidad <p-sortIcon field="cantidad"></p-sortIcon></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item>
+                    <tr>
+                        <td>{{item.id}}</td>
+                        <td>{{item.fecha | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                        <td>{{item.producto?.nombre}}</td>
+                        <td>{{item.producto?.categoria?.nombre}}</td>
+                        <td>{{item.cantidad}}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="7">No hay coincidencias en producto.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Inventario">
         <div class="card">
             <p-table #dt1 [tableStyle]="{'min-width': '25rem'}"
             [globalFilterFields]="['nombre','categoria.nombre']">

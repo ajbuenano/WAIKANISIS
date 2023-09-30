@@ -11,5 +11,7 @@ export const environment = {
   pathCategoria: 'Categoria',
   pathMotivo: 'Motivo',
   pathProducto: 'Producto',
+  pathInventarioRestaurante: 'InventarioRestaurante',
+  pathMovimientoRestaurante: 'MovimientoRestaurante',
   pathUser: 'Usuario'
 };
