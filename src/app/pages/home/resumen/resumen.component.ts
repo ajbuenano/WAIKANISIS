@@ -121,7 +121,7 @@ export class ResumenComponent implements OnInit{
             });
           });
         });
-        console.log(this.itemsRestaurante)
+        console.log(this.itemsInventario)
         this.loadingInventario = false;
       })
     );
