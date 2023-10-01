@@ -1,15 +1,18 @@
 <p-tabView>
     <p-tabPanel header="Movimientos">
         <div class="card">
-            <p-table #dt1 [tableStyle]="{'min-width': '25rem'}"
-            [globalFilterFields]="['nombre','categoria.nombre']">
+            <p-table #dt1 [value]="itemsBodega" [tableStyle]="{'min-width': '25rem'}"
+            [globalFilterFields]="['producto.nombre','producto.categoria.nombre']" [loading]="loadingBodega"
+                [paginator]="true" [rows]="10" [showCurrentPageReport]="true" 
+                currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} entradas"
+                [rowsPerPageOptions]="[10, 15, 20]">
                 <ng-template pTemplate="caption">
                     <div class="flex justify-content-between flex-wrap">
                         <span class="p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="dt1.filterGlobal(getValueEvent($event), 'contains')" placeholder="Buscar" />
                         </span>
-                        <p-calendar [(ngModel)]="date" dateFormat="dd/mm/yy" selectionMode="range" [showIcon]="true" [readonlyInput]="true"></p-calendar>
+                        <p-calendar [(ngModel)]="dateBodega" dateFormat="dd/mm/yy" selectionMode="range" [maxDate]="maxDate" [showIcon]="true" [readonlyInput]="true" (onSelect)="getResumenBodega()"></p-calendar>
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header">
@@ -26,10 +29,10 @@
                 <ng-template pTemplate="body" let-item>
                     <tr>
                         <td>{{item.id}}</td>
-                        <td>{{item.fecha}}</td>
-                        <td>{{item.producto.nombre}}</td>
-                        <td>{{item.categoria.nombre}}</td>
-                        <td>{{item.motivo.nombre}}</td>
+                        <td>{{item.fecha | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                        <td>{{item.producto?.nombre}}</td>
+                        <td>{{item.producto?.categoria?.nombre}}</td>
+                        <td>{{item.motivo?.nombre}}</td>
                         <td>{{item.cantidad}}</td>
                         <td>{{item.operacion}}</td>
                     </tr>
@@ -44,15 +47,18 @@
     </p-tabPanel>
     <p-tabPanel header="Restaurante">
         <div class="card">
-            <p-table #dt2 [value]="items" [tableStyle]="{'min-width': '25rem'}"
-            [globalFilterFields]="['producto.nombre','producto.categoria.nombre']" [loading]="loading">
+            <p-table #dt2 [value]="itemsRestaurante" [tableStyle]="{'min-width': '25rem'}"
+                [globalFilterFields]="['producto.nombre','producto.categoria.nombre']" [loading]="loadingRestaurante"
+                [paginator]="true" [rows]="10" [showCurrentPageReport]="true" 
+                currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} entradas"
+                [rowsPerPageOptions]="[10, 15, 20]">
                 <ng-template pTemplate="caption">
                     <div class="flex justify-content-between flex-wrap">
                         <span class="p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="dt2.filterGlobal(getValueEvent($event), 'contains')" placeholder="Buscar" />
                         </span>
-                        <p-calendar [(ngModel)]="date" dateFormat="dd/mm/yy" selectionMode="range" [maxDate]="maxDate" [showIcon]="true" [readonlyInput]="true" (onSelect)="getResumenRestaurante()"></p-calendar>
+                        <p-calendar [(ngModel)]="dateRestaurante" dateFormat="dd/mm/yy" selectionMode="range" [maxDate]="maxDate" [showIcon]="true" [readonlyInput]="true" (onSelect)="getResumenRestaurante()"></p-calendar>
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header">
@@ -83,13 +89,16 @@
     </p-tabPanel>
     <p-tabPanel header="Inventario">
         <div class="card">
-            <p-table #dt1 [tableStyle]="{'min-width': '25rem'}"
-            [globalFilterFields]="['nombre','categoria.nombre']">
+            <p-table #dt3 [value]="itemsInventario" [tableStyle]="{'min-width': '25rem'}"
+            [globalFilterFields]="['producto.nombre','producto.categoria.nombre']" [loading]="loadingInventario"
+                [paginator]="true" [rows]="10" [showCurrentPageReport]="true" 
+                currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} entradas"
+                [rowsPerPageOptions]="[10, 15, 20]">
                 <ng-template pTemplate="caption">
                     <div class="flex">
                         <span class="p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input pInputText type="text" placeholder="Buscar" />
+                            <input pInputText type="text" (input)="dt3.filterGlobal(getValueEvent($event), 'contains')" placeholder="Buscar" />
                         </span>
                     </div>
                 </ng-template>
@@ -106,11 +115,11 @@
                 <ng-template pTemplate="body" let-item>
                     <tr>
                         <td>{{item.id}}</td>
-                        <td>{{item.categoria.nombre}}</td>
+                        <td>{{item.categoria?.nombre}}</td>
                         <td>{{item.nombre}}</td>
-                        <td>{{item.inventariorestaurante.cantidad}}</td>
-                        <td>{{item.inventariobodega.cantidad}}</td>
-                        <td></td>
+                        <td>{{item.inventariorestaurante?.cantidad}}</td>
+                        <td>{{item.inventariobodega?.cantidad}}</td>
+                        <td>{{item.total}}</td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="emptymessage">

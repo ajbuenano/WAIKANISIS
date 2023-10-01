@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy } from '@angular/core';
 import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { FirestoreService } from '../../services/firestore.service';
-import { Restaurante, RestauranteDTO } from 'src/app/shared/models/restaurante.interface';
+import { Restaurante} from 'src/app/shared/models/restaurante.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-restaurante',
@@ -10,34 +11,42 @@ import { Restaurante, RestauranteDTO } from 'src/app/shared/models/restaurante.i
   styleUrls: ['./restaurante.component.css'],
   providers: [ConfirmationService, MessageService]
 })
-export class RestauranteComponent {
+export class RestauranteComponent implements OnInit, OnDestroy {
 
-  items!: Restaurante[];
+  items: Restaurante[] = [];
   public FirestoreService = inject(FirestoreService);
+  private dataSubscription!: Subscription;
   private confirmationService = inject(ConfirmationService);
   private messageService = inject(MessageService);
   loading: boolean = true;
 
   async ngOnInit(): Promise<void> {
-    await this.get();
+    this.get();
     this.loading = false;
+  }
+
+  ngOnDestroy() {
+    if (this.dataSubscription) {
+      this.dataSubscription.unsubscribe();
+    }
   }
 
   getValueEvent(event: Event){
     return (event.target as HTMLInputElement).value;
   }
 
-  async get(){
-    await this.FirestoreService.getCollection<Restaurante>(environment.pathInventarioRestaurante).subscribe( res => {
-      let i=1;
-      this.items = [];
-      res.map(async item => { 
+  get() {
+    this.dataSubscription = this.FirestoreService.getCollection<Restaurante>(
+      environment.pathInventarioRestaurante
+    ).subscribe(async (res) => {
+      let i = 1;
+      this.items = await Promise.all(res.map(async (item) => {
         item.id = i++;
         item.producto = (await (item.producto as any).get()).data();
         item.producto.categoria = (await (item.producto.categoria as any).get()).data();
         item.cantidadActual = item.cantidad;
-      });
-      this.items = res;
+        return item;
+      }));
     });
   }
 
@@ -48,10 +57,9 @@ export class RestauranteComponent {
         icon: 'pi pi-exclamation-triangle',
         accept: async () => {
           this.loading = true;
-          let itemsAux = [] as RestauranteDTO[];
-          itemsAux = this.items;
-          for (const itemAux of itemsAux) {
-            if(itemAux.cantidadActual !== itemAux.cantidad){
+          
+          for (const itemAux of this.items) {
+            if(itemAux.cantidadActual != itemAux.cantidad){
               let itemActualizar = {
                 uid: itemAux.uid,
                 producto: {},
@@ -59,6 +67,7 @@ export class RestauranteComponent {
                 stockmin: itemAux.stockmin
               };
               itemActualizar.producto = await this.FirestoreService.getRef(environment.pathProducto, itemAux.producto.uid);
+              
               if (itemAux.uid){
                 if(itemAux.cantidad > itemAux.cantidadActual){
                   let itemMovimiento = {
@@ -68,15 +77,31 @@ export class RestauranteComponent {
                     cantidad: itemAux.cantidad - itemAux.cantidadActual
                   };
                   itemActualizar.cantidad = +itemAux.cantidadActual;
+                  
+                  const index = this.items.indexOf(itemAux);
+                  if (index !== -1) {
+                    const restauranteActualizado: Restaurante = {
+                      uid: itemAux.uid,
+                      id: itemAux.id,
+                      producto: itemAux.producto,
+                      cantidad: itemActualizar.cantidad,
+                      stockmin: itemAux.stockmin, 
+                      cantidadActual: itemActualizar.cantidad
+                    };
+                    this.items[index] = restauranteActualizado;
+                  }
+
                   await this.FirestoreService.updateDoc(itemActualizar, environment.pathInventarioRestaurante, itemAux.uid).then(() => {
                     this.FirestoreService.createDoc(itemMovimiento, environment.pathMovimientoRestaurante, itemMovimiento.uid)
-                    this.messageService.add({ severity: 'success', summary: 'Operación exitosa', detail: 'Información subida' });
+                    this.messageService.add({ severity: 'success', summary: 'Operación exitosa', detail: 'Información subida', life: 3000 });
                   }).catch(() => {
+                    itemAux.cantidadActual = itemAux.cantidad;
                     this.messageService.add({ severity: 'error', summary: 'Error!', detail: 'Fallo al subir la información', life: 3000 });
                   });
                 }
                 else{
-                  this.messageService.add({ severity: 'error', summary: 'Error!', detail: 'No se puede asignar una cantidad actual mayor que la cantidad inicial', life: 3000 });
+                  itemAux.cantidadActual = itemAux.cantidad;
+                  this.messageService.add({ severity: 'error', summary: 'Error!', detail: `No se puede asignar una cantidad actual mayor que la cantidad inicial en el producto ${itemAux.producto.nombre}`, life: 3000 });
                 }
               }
             }
