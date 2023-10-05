@@ -38,7 +38,9 @@ export class ResumenComponent implements OnInit{
 
     this.getResumenBodega();
     await this.getResumenRestaurante();
+    console.log("entra a producto");
     await this.getProductos();
+    console.log("pasa de producto");
     console.log(this.itemsProductos)
     this.getResumenInventario();
     
@@ -101,32 +103,40 @@ export class ResumenComponent implements OnInit{
 
   async getResumenInventario(){
     this.loadingInventario = true;
+    let i = 1;
 
     for (const producto of this.itemsProductos) {
       console.log(producto);
       let restaurante: Restaurante|null = null; 
       let bodega: Bodega|null = null;
-      let i = 1;
-      
-      
-      await this.FirestoreService.getDoc(environment.pathInventarioRestaurante, producto.uid).subscribe( res => {
-        restaurante = res as Restaurante 
+      let refProducto = await this.FirestoreService.getRef(environment.pathProducto, producto.uid);
+      await this.getInventarioRestauranteByProducto(refProducto).then((res: any) => {
+        if (res.length != 0){
+          restaurante = (res as Restaurante[])[0]
+        } else {
+          restaurante = {} as Restaurante;
+          restaurante.cantidad = 0;
+        }
         console.log("rest",res);
       });
-
-      await this.FirestoreService.getDoc(environment.pathInventarioBodega, producto.uid).subscribe( res => {
-        bodega = res as Bodega
+      await this.getInventarioBodegaByProducto(refProducto).then((res: any) => {
+        if (res.length != 0){
+          bodega = (res as Bodega[])[0]
+        } else {
+          bodega = {} as Bodega;
+          bodega.cantidad = 0;
+        }
         console.log("bod",res);
       });
 
-      if (restaurante!==null && bodega!== null) {
+      if (restaurante!=null && bodega!=null) {
   
         const item: Inventario = {
           id: i++, // Otra propiedad para identificar el producto
           producto,
           restaurante: restaurante as Restaurante,
           bodega: bodega as Bodega,
-          total: (bodega as Bodega).cantidad - (restaurante as Restaurante).cantidad
+          total: (bodega as Bodega).cantidad + (restaurante as Restaurante).cantidad
         };
         console.log("item",item);
         this.itemsInventario.push(item);
@@ -135,16 +145,36 @@ export class ResumenComponent implements OnInit{
     this.loadingBodega = false;
   }
 
-  async getProductos(){
-    await this.FirestoreService.getCollection<Producto>(environment.pathProducto).subscribe( async res => {
-      let i=1;
-      await res.map(async item => { 
-        item.id = i++;
-        item.categoria = (await (item.categoria as any).get()).data();
+  async getInventarioRestauranteByProducto(refProducto:any){
+    return new Promise((resolve) => {
+      this.FirestoreService.getCollectionQuery(environment.pathInventarioRestaurante,'producto','==', refProducto).subscribe( res => {
+        resolve(res);
       });
-      console.log(res);
-      this.itemsProductos = res;
-    });
+    })
+  }
+  
+  async getInventarioBodegaByProducto(refProducto:any){
+    return new Promise((resolve) => {
+      this.FirestoreService.getCollectionQuery(environment.pathInventarioBodega,'producto','==', refProducto).subscribe( res => {
+        resolve(res);
+      });
+    })
+  }
+
+  async getProductos(){
+    return new Promise((resolve) => {
+      this.FirestoreService.getCollection<Producto>(environment.pathProducto).subscribe( async res => {
+        let i=1;
+        await res.map(async item => { 
+          item.id = i++;
+          item.categoria = (await (item.categoria as any).get()).data();
+        });
+        console.log("productos",res);
+        this.itemsProductos = res;
+        resolve('');
+      });
+      console.log("pasa a funcion");
+    })
   }
   
 
