@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { Bodega, BodegaMovimiento } from 'src/app/shared/models/bodega.interface';
 import { Inventario } from 'src/app/shared/models/inventario.interface';
 import { Producto } from 'src/app/shared/models/producto.interface';
-import { forkJoin, map } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-resumen',
@@ -18,6 +18,7 @@ export class ResumenComponent implements OnInit{
   maxDate = new Date();
   itemsRestaurante: RestauranteMovimiento[] = [];
   itemsBodega: BodegaMovimiento[] = [];
+  itemsProductos: Producto[] = [];
   itemsInventario: Inventario[] = [];
   public FirestoreService = inject(FirestoreService);
   loadingRestaurante: boolean = true;
@@ -37,7 +38,10 @@ export class ResumenComponent implements OnInit{
 
     this.getResumenBodega();
     await this.getResumenRestaurante();
+    await this.getProductos();
+    console.log(this.itemsProductos)
     this.getResumenInventario();
+    
 
     this.loadingRestaurante = false;
     this.loadingBodega = false;
@@ -96,36 +100,51 @@ export class ResumenComponent implements OnInit{
   }
 
   async getResumenInventario(){
+    this.loadingInventario = true;
 
-    const productos$ = this.FirestoreService.getCollection<Producto>(environment.pathProducto);
-    const restaurantes$ = this.FirestoreService.getCollection<Restaurante>(environment.pathInventarioRestaurante);
-    const bodegas$ = this.FirestoreService.getCollection<Bodega>(environment.pathInventarioBodega);
+    for (const producto of this.itemsProductos) {
+      console.log(producto);
+      let restaurante: Restaurante|null = null; 
+      let bodega: Bodega|null = null;
+      let i = 1;
+      
+      
+      await this.FirestoreService.getDoc(environment.pathInventarioRestaurante, producto.uid).subscribe( res => {
+        restaurante = res as Restaurante 
+        console.log("rest",res);
+      });
 
-    forkJoin([productos$, restaurantes$, bodegas$]).pipe(
-      map(([productos, restaurantes, bodegas]) => {
-        let i = 1;
-        this.loadingInventario = true;
-        productos.forEach((producto) => {
-          restaurantes.forEach((restaurante) => {
-            bodegas.forEach((bodega) => {
+      await this.FirestoreService.getDoc(environment.pathInventarioBodega, producto.uid).subscribe( res => {
+        bodega = res as Bodega
+        console.log("bod",res);
+      });
 
-              const item: Inventario = {
-                id: i++, // Asigna un valor apropiado
-                producto,
-                restaurante,
-                bodega,
-                total: bodega.cantidad - restaurante.cantidad, // Asigna un valor apropiado
-              };
+      if (restaurante!==null && bodega!== null) {
+  
+        const item: Inventario = {
+          id: i++, // Otra propiedad para identificar el producto
+          producto,
+          restaurante: restaurante as Restaurante,
+          bodega: bodega as Bodega,
+          total: (bodega as Bodega).cantidad - (restaurante as Restaurante).cantidad
+        };
+        console.log("item",item);
+        this.itemsInventario.push(item);
+      }
+    }
+    this.loadingBodega = false;
+  }
 
-              this.itemsInventario.push(item);
-            });
-          });
-        });
-        console.log(this.itemsInventario)
-        this.loadingInventario = false;
-      })
-    );
-
+  async getProductos(){
+    await this.FirestoreService.getCollection<Producto>(environment.pathProducto).subscribe( async res => {
+      let i=1;
+      await res.map(async item => { 
+        item.id = i++;
+        item.categoria = (await (item.categoria as any).get()).data();
+      });
+      console.log(res);
+      this.itemsProductos = res;
+    });
   }
   
 
