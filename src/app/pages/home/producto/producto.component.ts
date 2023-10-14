@@ -69,6 +69,8 @@ export class ProductoComponent {
     let itemAux = {} as ProductoDTO;
     itemAux.nombre = this.item.nombre;
     itemAux.verEnRestaurante = this.item.verEnRestaurante;
+    itemAux.stockMinBodega = this.item.stockMinBodega;
+    itemAux.stockMinRestaurante = this.item.stockMinRestaurante;
     itemAux.categoria = await this.FirestoreService.getRef(environment.pathCategoria, this.item.categoria.uid);
     if (this.item.uid){
       itemAux.uid = this.item.uid;

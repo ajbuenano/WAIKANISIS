@@ -7,5 +7,5 @@ export interface Inventario {
     producto: Producto,
     restaurante: Restaurante,
     bodega: Bodega,
-    total: number
+    total?: number
 }

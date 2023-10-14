@@ -31,6 +31,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ToastModule } from 'primeng/toast';
 import { ResumenComponent } from './resumen/resumen.component';
 import { PasswordModule } from 'primeng/password';
+import { MultiSelectModule } from 'primeng/multiselect'; 
 
 
 @NgModule({
@@ -67,8 +68,8 @@ import { PasswordModule } from 'primeng/password';
     ToastModule,
     TabViewModule,
     CalendarModule,
-    PasswordModule
-
+    PasswordModule,
+    MultiSelectModule 
   ]
 })
 export class HomeModule { }

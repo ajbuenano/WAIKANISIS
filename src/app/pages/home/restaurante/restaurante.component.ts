@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { FirestoreService } from '../../services/firestore.service';
 import { Restaurante} from 'src/app/shared/models/restaurante.interface';
 import { Subscription } from 'rxjs';
+//import { Producto } from 'src/app/shared/models/producto.interface';
 
 @Component({
   selector: 'app-restaurante',
@@ -19,6 +20,7 @@ export class RestauranteComponent implements OnInit, OnDestroy {
   private confirmationService = inject(ConfirmationService);
   private messageService = inject(MessageService);
   loading: boolean = true;
+  //itemsProductos: Producto[] = [];
 
   async ngOnInit(): Promise<void> {
     this.get();
@@ -50,6 +52,59 @@ export class RestauranteComponent implements OnInit, OnDestroy {
     });
   }
 
+ /* async get(){
+    this.loading = true;
+    let i = 1;
+    for (const producto of this.itemsProductos) {
+      let restaurante: Restaurante|null = null; 
+      let refProducto = await this.FirestoreService.getRef(environment.pathProducto, producto.uid);
+      await this.getInventarioRestauranteByProducto(refProducto).then((res: any) => {
+        if (res.length != 0){
+          restaurante = (res as Restaurante[])[0]
+        } else {
+          restaurante = {} as Restaurante;
+          restaurante.cantidad = 0;
+        }
+        console.log("rest",res);
+      });
+      if (restaurante!=null) {
+  
+        const item: Restaurante = {
+          uid:,
+          id: i++, // Otra propiedad para identificar el producto
+          producto,
+          cantidad,
+          cantidadActual,
+        };
+        console.log("item",item);
+        this.itemsInventario.push(item);
+      }
+    }
+    this.loading = false;
+  }
+
+  async getInventarioRestauranteByProducto(refProducto:any){
+    return new Promise((resolve) => {
+      this.FirestoreService.getCollectionQuery(environment.pathInventarioRestaurante,'producto','==', refProducto).subscribe( res => {
+        resolve(res);
+      });
+    })
+  }
+
+  async getProductos(){
+    return new Promise((resolve) => {
+      this.FirestoreService.getCollection<Producto>(environment.pathProducto).subscribe( async res => {
+        let i=1;
+        await res.map(async item => { 
+          item.id = i++;
+          item.categoria = (await (item.categoria as any).get()).data();
+        });
+        this.itemsProductos = res;
+        resolve('');
+      });
+    })
+  }*/
+
   async subirStockProductos() {
     this.confirmationService.confirm({
         message: '¿Estás seguro que deseas subir la información?',
@@ -64,7 +119,6 @@ export class RestauranteComponent implements OnInit, OnDestroy {
                 uid: itemAux.uid,
                 producto: {},
                 cantidad: itemAux.cantidad,
-                stockmin: itemAux.stockmin
               };
               itemActualizar.producto = await this.FirestoreService.getRef(environment.pathProducto, itemAux.producto.uid);
               
@@ -73,7 +127,7 @@ export class RestauranteComponent implements OnInit, OnDestroy {
                   let itemMovimiento = {
                     uid: this.FirestoreService.getId(),
                     fecha: new Date(),
-                    producto: itemAux.producto,
+                    producto: itemActualizar.producto,
                     cantidad: itemAux.cantidad - itemAux.cantidadActual
                   };
                   itemActualizar.cantidad = +itemAux.cantidadActual;
@@ -85,7 +139,6 @@ export class RestauranteComponent implements OnInit, OnDestroy {
                       id: itemAux.id,
                       producto: itemAux.producto,
                       cantidad: itemActualizar.cantidad,
-                      stockmin: itemAux.stockmin, 
                       cantidadActual: itemActualizar.cantidad
                     };
                     this.items[index] = restauranteActualizado;

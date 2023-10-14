@@ -5,7 +5,9 @@ export interface Producto {
     uid: string,
     id: number,
     categoria: Categoria,
-    verEnRestaurante: boolean
+    verEnRestaurante: boolean,
+    stockMinBodega: number,
+    stockMinRestaurante: number
 }
 
 export interface ProductoDTO {
@@ -13,5 +15,7 @@ export interface ProductoDTO {
     uid: string,
     id: number,
     categoria: any,
-    verEnRestaurante: boolean
+    verEnRestaurante: boolean,
+    stockMinBodega: number,
+    stockMinRestaurante: number
 }

@@ -13,7 +13,6 @@ import { ResumenComponent } from './resumen/resumen.component';
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [usersGuard],
   children:[
-    { path: '', component: ResumenComponent},
     { path: 'producto', component: ProductoComponent},
     { path: 'categoria', component: CategoriaComponent},
     { path: 'motivo', component: MotivosComponent},
@@ -23,7 +22,6 @@ const routes: Routes = [
     { path: 'resumen', component: ResumenComponent},
 
   ]},  
-  { path: '**', redirectTo: '', pathMatch: 'full', canActivate: [usersGuard]}
 ];
 
 @NgModule({

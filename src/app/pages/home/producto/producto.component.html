@@ -13,10 +13,12 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th pSortableColumn="id" style="width:20%">N° <p-sortIcon field="id"></p-sortIcon></th>
-                <th pSortableColumn="nombre" style="width:30%">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
-                <th pSortableColumn="categoria" style="width:30%">Categoría <p-sortIcon field="categoria"></p-sortIcon></th>
-                <th style="width:20%">Acciones</th>
+                <th pSortableColumn="id" style="width:10%">N° <p-sortIcon field="id"></p-sortIcon></th>
+                <th pSortableColumn="nombre" style="width:25%">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+                <th pSortableColumn="categoria" style="width:20%">Categoría <p-sortIcon field="categoria"></p-sortIcon></th>
+                <th pSortableColumn="id" style="width:15%">Stock B<p-sortIcon field="stockBodega"></p-sortIcon></th>
+                <th pSortableColumn="id" style="width:15%">Stock R<p-sortIcon field="stockRestaurante"></p-sortIcon></th>
+                <th style="width:15%">Acciones</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item>
@@ -24,6 +26,8 @@
                 <td>{{item.id}}</td>
                 <td><i class="pi pi-star" style="color: rgb(82, 170, 172)" *ngIf="item.verEnRestaurante"></i> {{item.nombre}}</td>
                 <td>{{item.categoria.nombre}}</td>
+                <td>{{item.stockMinBodega}}</td>
+                <td>{{item.stockMinRestaurante}}</td>
                 <td>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="edit(item)"></button>
                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="delete(item)"></button>
@@ -59,6 +63,16 @@
                     </div>
                 </ng-template>
             </p-dropdown>
+        </div>
+        <div class="field">
+            <label for="name">Stock mínimo bodega</label>
+            <input type="number" pInputText id="name" [(ngModel)]="item.stockMinBodega" required autofocus />
+            <small class="p-error" *ngIf="submitted && !item.stockMinBodega">El stock mínimo es requerido.</small>
+        </div>
+        <div class="field">
+            <label for="name">Stock mínimo restaurante</label>
+            <input type="number" pInputText id="name" [(ngModel)]="item.stockMinRestaurante" required autofocus />
+            <small class="p-error" *ngIf="submitted && !item.stockMinRestaurante">El stock mínimo es requerido.</small>
         </div>
         <div class="field">
             <p-checkbox [(ngModel)]="item.verEnRestaurante" [binary]="true" inputId="binary" label="Ver en restaurante"></p-checkbox>

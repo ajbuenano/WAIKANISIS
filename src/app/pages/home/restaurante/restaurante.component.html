@@ -25,7 +25,7 @@
                 <td>{{item.producto?.categoria?.nombre}}</td>
                 <td>{{item.producto?.nombre}}</td>
                 <td>
-                    <div [ngClass]="{'lowstock': (item.cantidad <= item.stockmin)}">
+                    <div [ngClass]="{'lowstock': (item.cantidad <= item.producto?.stockMinRestaurante)}">
                         {{item.cantidad}}
                     </div>
                 </td>
@@ -33,7 +33,7 @@
                     <p-cellEditor>
                         <ng-template pTemplate="input">
                        <!--     [(ngModel)]="product.code"  va a lado de type--> 
-                           <input pInputText type="text" [(ngModel)]="item.cantidadActual">
+                           <input pInputText type="number" [(ngModel)]="item.cantidadActual">
                         </ng-template>
                         <ng-template pTemplate="output">
                             {{item.cantidadActual}}

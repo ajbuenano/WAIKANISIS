@@ -1,0 +1,21 @@
+.Listaproducto{
+    width: 40%;
+    height: 40%;
+}
+.Listaproductoseleccionado{
+    width: 60%;
+    height: 40%;
+}
+.producto-name{
+    margin: 0 !important;
+}
+
+::ng-deep .stockRest {
+    background-color: #fdf9c4 !important;
+}
+::ng-deep .stockBodega {
+    background-color: #ffda9e !important;
+}
+::ng-deep .sinStock {
+    background-color: #fabfb7 !important;
+}

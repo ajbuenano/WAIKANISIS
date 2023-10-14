@@ -5,7 +5,14 @@ export interface Restaurante {
     id: number,
     producto: Producto,
     cantidad: number,
-    stockmin: number,
+    cantidadActual: number
+}
+
+export interface RestauranteDTO {
+    uid: string,
+    id: number,
+    producto: any,
+    cantidad: number,
     cantidadActual: number
 }
 

@@ -7,7 +7,6 @@ export interface Bodega {
     id: number,
     producto: Producto,
     cantidad: number,
-    stockmin: number,
     restaurante: Restaurante
 }
 

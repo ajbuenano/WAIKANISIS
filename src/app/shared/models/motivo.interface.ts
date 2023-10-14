@@ -1,5 +1,6 @@
 export interface Motivo {
     uid: string,
     id: number,
-    nombre: string
+    nombre: string,
+    aRestaurante: boolean
 }
