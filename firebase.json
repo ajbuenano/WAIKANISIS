@@ -1,1 +1,7 @@
-{}
+{
+    "hosting": {
+        "site": "waikanicontrol",
+    
+        "public": "public"
+      }
+}
