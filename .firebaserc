@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "waikani-cafc4"
+  },
+  "targets": {
+    "waikani-cafc4": {
+      "hosting": {
+        "waikani": [
+          "waikani-cafc4"
+        ]
+      }
+    }
+  }
+}
