@@ -8,4 +8,13 @@ export const environment = {
     apiKey: 'AIzaSyDgfh_bVHspNrQjhCcq6_xB0WHK1qyIDPY',
     authDomain: 'waikani-cafc4.firebaseapp.com',
     messagingSenderId: '424889849544',
-  },}
+  },
+  pathCategoria: 'Categoria',
+  pathMotivo: 'Motivo',
+  pathProducto: 'Producto',
+  pathInventarioRestaurante: 'InventarioRestaurante',
+  pathInventarioBodega: 'InventarioBodega',
+  pathMovimientoRestaurante: 'MovimientoRestaurante',
+  pathMovimientoBodega: 'MovimientoBodega',
+  pathUser: 'Usuario'
+};

@@ -12,7 +12,7 @@ import { provideDatabase,getDatabase } from '@angular/fire/database';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { provideMessaging,getMessaging } from '@angular/fire/messaging';
 import { provideStorage,getStorage } from '@angular/fire/storage';
-import { AngularFireModule } from '@angular/fire/compat';
+import {AngularFireModule} from '@angular/fire/compat';
 
 @NgModule({
   declarations: [
@@ -29,7 +29,9 @@ import { AngularFireModule } from '@angular/fire/compat';
     //provideStorage(() => getStorage()),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    AngularFireModule.initializeApp(environment.firebase)
+  
   ],
   providers: [],
   bootstrap: [AppComponent]

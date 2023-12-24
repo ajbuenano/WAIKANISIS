@@ -1,0 +1,159 @@
+<p-messages></p-messages>
+<div class="card">
+    <p-table #dt1 [value]="itemsInventario" [tableStyle]="{'min-width': '25rem'}" [loading]="loading"
+    [globalFilterFields]="['nombre','categoria.nombre']">
+        <ng-template pTemplate="caption">
+            <div class="flex">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" placeholder="Buscar" />
+                </span>
+                <button pButton label="Entrada/Salida" class="p-button-outlined ml-auto" icon="pi pi-plus" (click)="openNew()"></button>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th rowspan="2" pSortableColumn="id">N° <p-sortIcon field="id"></p-sortIcon></th>
+                <th rowspan="2" pSortableColumn="nombre">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+                <th rowspan="2" pSortableColumn="categoria">Categoría <p-sortIcon field="categoria"></p-sortIcon></th>
+                <th rowspan="2" pSortableColumn="cantidad">Cantidad <p-sortIcon field="cantidad"></p-sortIcon></th>
+                <th rowspan="2" pSortableColumn="stockmin">Stock min <p-sortIcon field="stockmin"></p-sortIcon></th>
+                <th colspan="2" pSortableColumn="restaurante" style="text-align: center;">Restaurante</th>
+            </tr>
+            <tr>
+                <th pSortableColumn="stockminRestaurante" style="text-align: center;">Stock min</th>
+                <th pSortableColumn="cantidadRestaurante" style="text-align: center;">Cantidad</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+            <tr [ngClass]="{'stockRest': (item.restaurante?.cantidad < item.producto.stockMinRestaurante), 'stockBodega': (item.bodega?.cantidad < item.producto.stockMinBodega), 'sinStock':(item.bodega?.cantidad < item.producto.stockMinBodega && item.restaurante?.cantidad < item.producto.stockMinRestaurante)}">
+                <td>{{item.id}}</td>
+                <td>{{item.producto.nombre}}</td>
+                <td>{{item.producto.categoria?.nombre}}</td>
+                <td>{{item.bodega?.cantidad}}</td>
+                <td>{{item.producto.stockMinBodega}}</td>
+                <td>{{item.producto.stockMinRestaurante}}</td>
+                <td>{{item.restaurante?.cantidad}}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7">No hay coincidencias en producto.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+<p-toast></p-toast>
+<p-confirmDialog #cd [style]="{width: '50vw'}">
+    <ng-template pTemplate="footer">
+        <button type="button" pButton icon="pi pi-check" label="Sí" (click)="cd.accept()"></button>
+        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
+    </ng-template>
+</p-confirmDialog>
+
+<p-dialog [(visible)]="dialog" [style]="{ width: '1000px'}" header="Entradas/Salidas" [modal]="true" styleClass="p-fluid">
+    <div class="flex justify-content-end flex-wrap mt-3 ">
+        <div class="flex align-items-center justify-content-center m-2" *ngIf="motivoSelect?.aRestaurante && tipo=='salida'">
+            <button pButton pRipple icon="pi pi-filter-fill" class="p-button-success" (click)="filtrar()"></button>
+        </div>
+        <div class="flex align-items-center justify-content-center m-2">
+            <p-dropdown [(ngModel)]="motivoSelect" inputId="motivo" [options]="motivosFiltrados">
+                <ng-template pTemplate="selectedItem">
+                    <div class="flex align-items-center gap-2" *ngIf="motivoSelect && ((tipo=='entrada' && !motivoSelect.aRestaurante) || (tipo=='salida'))">
+                        <div>{{ motivoSelect.nombre }}</div>
+                    </div>
+                </ng-template>
+                <ng-template let-motivo pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div>{{ motivo.nombre }}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+        </div>
+        <div class="flex align-items-center justify-content-center m-2">
+            <div class="card flex justify-content-center">
+                <p-selectButton (onChange)="filtrarMotivo()" [options]="stateOptions" [(ngModel)]="tipo" optionLabel="label" optionValue="value"></p-selectButton>
+            </div>    
+        </div>
+    </div>
+    <div>
+        <div class="flex flex-column md:flex-row gap-5">
+            <div class="flex-auto card Listaproducto">
+                <p-table #dt2 [value]="Listaproducto" [(selection)]="ProductoSelect" dataKey="id" [tableStyle]="{'width': '100%'}" scrollHeight="300px"
+                [styleClass]="'p-datatable-sm'"  [globalFilterFields]="['producto.nombre', 'producto.categoria.nombre']" [scrollable]="true">
+                    <ng-template pTemplate="caption">
+                        <div class="flex">
+                            <span class="p-input-icon-left ml-auto">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dt2.filterGlobal(getValueEvent($event), 'contains')" placeholder="Buscar" />
+                            </span>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width:10%">
+                                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                            </th>
+                            <th style="width:55%">Nombre</th>
+                            <th style="width:35%">Cantidad</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-item>
+                        <tr>
+                            <td>
+                                <p-tableCheckbox [value]="item" [disabled]="(item.bodega?.cantidad==0 && tipo=='salida') || (motivoSelect.aRestaurante && !item.producto.verEnRestaurante)"></p-tableCheckbox>
+                            </td>
+                            <td>
+                                <h3 class="producto-name">{{item.producto.nombre}}</h3>
+                                <p>{{item.producto.categoria?.nombre}}</p>
+                            </td>
+                            <td>{{item.bodega.cantidad}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div> 
+            <div class="flex-auto card Listaproductoseleccionado">
+                <p-table #dt3 [value]="ProductoSelect" dataKey="id" [tableStyle]="{'width': '100%'}" [scrollable]="true" scrollHeight="300px"
+                    [globalFilterFields]="['producto.nombre', 'producto.categoria.nombre']">
+                    <ng-template pTemplate="caption">
+                        <div class="flex">
+                            <span class="p-input-icon-left ml-auto">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dt3.filterGlobal(getValueEvent($event), 'contains')" placeholder="Buscar" />
+                            </span>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Categoria</th>
+                            <th>Cantidad</th>
+                            <th>Entrada/Salida</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-item>
+                        <tr>
+                            <td>{{item.producto.nombre}}</td>
+                            <td>{{item.producto.categoria?.nombre}}</td>
+                            <td>{{item.bodega.cantidad}}</td>
+                            <td [pEditableColumn]="item.total" pEditableColumnField="name">
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="number" [max]="((tipo=='salida')?item.bodega.cantidad:null)" [min]="1" [(ngModel)]="item.total" required />
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{ item.total }}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div> 
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-progressSpinner *ngIf="loading" styleClass="w-3rem h-3rem" strokeWidth="6" fill="var(--surface-ground)"></p-progressSpinner> 
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="save()"></button>
+    </ng-template>

@@ -1,0 +1,201 @@
+.sidenav{
+    background: #52AAAC;
+    transition: all .8s ease;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    width: 5rem;
+    height: 100vh;
+    box-shadow: 0.063rem 0 1.25rem 0 #8690a3;
+
+    .logo-container{
+        display: flex;
+        align-items: center;
+        padding: 0.938rem 0.938rem 0 0.938rem;
+        width: 100%;
+        .logo{
+            background-image: url("../../../assets/wk_sb.png");
+            background-repeat: no-repeat;
+            width: 3rem;
+            height: 3rem;
+            min-width: 3rem;
+            border-radius: 3rem;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-cerrar{
+            margin: 0;
+            padding: 0;
+            margin-left: auto;
+            cursor: pointer;
+            width: 1.5rem;
+            height: 1.5rem;
+            background-color: transparent;
+            --bs-btn-close-focus-shadow: none;
+            border: none;   
+        }
+    }
+}
+
+.sidenav-collapsed{
+    width: 16.5625rem; 
+}
+
+.sidenav-nav{
+    list-style: none;
+    padding: 0.938rem;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: calc(100% - 3.65rem);
+
+    .sidenav-nav-item{
+        width: 100%;
+        margin-bottom: 0.625rem;
+        cursor: pointer;
+
+        .sidenav-nav-link{
+            display: flex;
+            align-items: center;
+            height: 3rem;
+            color: #f3f3f3;
+            text-decoration: none;
+            border-radius: 0.625rem;
+            transition: all .3s ease;
+
+            .sidenav-link-icon{
+                font-size: 22px;
+                width: 2rem;
+                min-width: 2rem;
+                margin: 0 0.5rem;
+                text-align: center;
+            }
+
+            .sidenav-link-text{
+                margin-left: 1rem;
+            }
+        }
+
+        .sidenav-nav-link:hover{
+            background-color: #ABD8D2;
+            color: #000;
+            
+            .material-symbols-outlined {
+                color: #000;
+            }
+        }
+    }
+
+    .sidenav-nav-exit{
+        width: 100%;
+        cursor: pointer;
+
+        .sidenav-nav-link{
+            display: flex;
+            align-items: center;
+            height: 3rem;
+            color: #f3f3f3;
+            text-decoration: none;
+            border-radius: 0.625rem;
+            border: 1px solid #f3f3f3;
+            transition: all .3s ease;
+
+            .sidenav-link-icon{
+                font-size: 22px;
+                width: 2rem;
+                min-width: 2rem;
+                margin-left: 0.5rem;
+                text-align: center;
+            }
+
+            .sidenav-link-text{
+                margin-left: 4rem;
+            }
+        }
+    }
+
+    .sidenav-nav-exit:hover{
+        .sidenav-nav-link{
+            background-color: #ABD8D2;
+            color: #000;
+            border: 1px solid #000;
+        }
+
+        .material-symbols-outlined {
+            color: #000;
+        }
+    }
+}
+
+.active{
+    background-color: #ABD8D2;
+
+    .material-symbols-outlined,
+    .sidenav-link-icon,
+    .sidenav-link-text{
+        color: #000;
+    }
+}
+
+.menu-collapse-icon{
+    font-size: 25px !important;
+    width: 2rem;
+    min-width: 2rem;
+    margin: auto 0.5rem auto auto;
+    text-align: center;
+    color: #f3f3f3;
+}
+
+.sublevel-nav{
+    list-style: none;
+    margin-left: -10px;
+
+    .sublevel-nav-item{
+        .sublevel-nav-link{
+            display: flex;
+            align-items: center;
+            height: 3rem;
+            color: #f3f3f3;
+            text-decoration: none;
+            border-radius: 0.625rem;
+            transition: all .3s ease;
+
+            .sublevel-link-icon{
+                font-size: 10px !important;
+                width: 2rem;
+                min-width: 2rem;
+                margin: 0 0.5rem;
+                text-align: center;
+                font-variation-settings:
+                'FILL' 1,
+                'wght' 100,
+                'GRAD' -25,
+                'opsz' 20
+            }
+
+            .sublevel-link-text{
+                margin-left: 0.8rem;
+            }
+        }
+
+        .sublevel-nav-link:hover{
+            color: #000;
+
+            .material-symbols-outlined {
+                color: #000;
+            }
+        }
+    }
+}
+
+.material-symbols-outlined {
+    color: #fff;
+    font-size: 30px !important;
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 200,
+    'GRAD' 0,
+    'opsz' 24
+  }

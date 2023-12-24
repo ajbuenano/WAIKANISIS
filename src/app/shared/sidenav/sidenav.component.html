@@ -1,0 +1,71 @@
+<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed' : ''">
+    <div class="logo-container">
+        <!--<button class="logo" (click)="toggleCollapse()">W</button>
+        <div class="logo-text" *ngIf="collapsed">WAIKANI</div>-->
+        <button class="logo bg-contain bg-center ml-auto shadow-3" (click)="toggleCollapse()"></button>        
+        <button class="btn-cerrar" *ngIf="collapsed" (click)="closeSidenav()">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+    </div>
+    <ul class="sidenav-nav">
+        <li class="sidenav-nav-item" *ngFor="let data of filteredNavbarData">
+            <a class="sidenav-nav-link" (click)="handleClick(data)"
+                *ngIf="data.items && data.items.length > 0"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact:true}"
+            >
+                <span class="material-symbols-outlined sidenav-link-icon">{{data.icon}}</span>
+                <span class="sidenav-link-text" *ngIf="collapsed">
+                    {{data.label}}
+                </span>
+                <span *ngIf="data.items && collapsed" class="material-symbols-outlined menu-collapsed-icon">
+                    {{!data.expanded ? 'chevron_right' : 'expand_more'}}
+                </span>
+            </a>
+            <a class="sidenav-nav-link" 
+                *ngIf="!data.items || (data.items && data.items.length === 0)"
+                [routerLink]="[data.routeLink]"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact:true}">
+                <span class="material-symbols-outlined sidenav-link-icon">{{data.icon}}</span>
+                <span class="sidenav-link-text" *ngIf="collapsed">
+                    {{data.label}}
+                </span>
+                <span *ngIf="data.items && collapsed" class="material-symbols-outlined menu-collapsed-icon">
+                    {{!data.expanded ? 'chevron_right' : 'expand_more'}}
+                </span>
+            </a>
+            <div *ngIf="collapsed && data.items && data.items.length > 0">
+                <app-sublevel-menu
+                    [data]="data"
+                    [collapsed]="collapsed"
+                    [multiple]="multiple"
+                    [expanded]="data.expanded"
+                ></app-sublevel-menu>
+            </div>
+            
+            
+        </li>
+        <li class="sidenav-nav-exit mt-auto">
+            <a class="sidenav-nav-link" [routerLink]="'/login'">
+            <span class="material-symbols-outlined sidenav-link-icon">logout</span>
+            <span class="sidenav-link-text" *ngIf="collapsed">Salir</span>
+        </a>
+        </li>
+    </ul>
+
+    <!--<ul class="sidenav-nav">
+        <li class="sidenav-nav-item" *ngFor="let data of filteredNavbarData">
+            <a class="sidenav-nav-link"
+                [routerLink]="[data.routeLink]"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact:true}"
+            >
+                <span class="material-symbols-outlined sidenav-link-icon">{{data.icon}}</span>
+                <span class="sidenav-link-text" *ngIf="collapsed">
+                    {{data.label}}
+                </span>
+            </a>
+        </li>    
+    </ul>-->
+</div>

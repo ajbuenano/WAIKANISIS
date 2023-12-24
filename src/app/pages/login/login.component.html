@@ -1,0 +1,29 @@
+<div class="wrapper">
+  <div class="container main">
+    <div class="row">
+      <div class="col-md-6 side-image">              
+      </div>
+      <div class="col-md-6 right">
+        <form [formGroup]="form"> 
+          <div class="circular-shadow">
+            <img src="../../../assets/waikani_logo.jpg" alt="WAIKANI">
+          </div> 
+          <div class="input-box mt-4">
+            <div class="input-field">
+              <input type="text" class="input" formControlName="username" required>
+              <label>Usuario</label> 
+            </div> 
+            <div class="input-field">
+              <input type="password" class="input" formControlName="password" required>
+              <label>Contraseña</label>
+            </div> 
+            <div class="input-field">
+              <p-toast></p-toast> 
+              <input type="submit" class="submit" value="Ingresar" (click)="onSubmit()">
+            </div> 
+          </div>
+        </form>  
+      </div>
+    </div>
+  </div>
+</div>
